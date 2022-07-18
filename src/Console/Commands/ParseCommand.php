@@ -29,7 +29,7 @@ class ParseCommand extends Command
         $parseResult = $parser->doParse();
         $output->writeln("<info>Total Parsed: {$parseResult['count']} items</info>");
 
-        $io->writeln(json_encode($parseResult['data'], JSON_PRETTY_PRINT));
+        $io->writeln(json_encode($parseResult, JSON_PRETTY_PRINT));
         return Command::SUCCESS;
     }
 

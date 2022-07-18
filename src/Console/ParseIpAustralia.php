@@ -107,8 +107,10 @@ class ParseIpAustralia
 
                 $image = $this->dom->find('#TM' . $item->text . ' .image > img');
                 $status = isset($this->dom->find('#TM' . $item->text . ' .status span')[0])
-                    ? trim($this->dom->find('#TM' . $item->text . ' .status span')->text) : 'Can`t find status';
+                    ? trim($this->dom->find('#TM' . $item->text . ' .status span')->text) : 'Status not available';
 
+                $status1 = $this->getFirstStatus(':',$status);
+                $status2 = $this->getSecondStatus(':',$status);
                 try {
                     $logo = $image->getAttribute('src');
                 } catch (EmptyCollectionException $e) {
@@ -120,7 +122,8 @@ class ParseIpAustralia
                     'logo' => $logo,
                     'name' => $name,
                     'classes' => $class,
-                    'status' => $status,
+                    'status1' => $status1,
+                    'status2' => $status2,
                     'details' => 'https://search.ipaustralia.gov.au' . $href,
                     'page' => $pageNum,
                     'url' => $url
@@ -133,9 +136,21 @@ class ParseIpAustralia
 
 
         return [
+            'data' => $products,
             'count' => count($products),
-            'data' => $products
         ];
+    }
+
+    public function getSecondStatus($search, $subject): string
+    {
+        return trim(array_reverse(explode($search, $subject, 2))[0]);
+    }
+
+    public function getFirstStatus($search, $subject): string
+    {
+        $result = strstr($subject, (string) $search, true);
+
+        return trim($result === false ? $subject : $result);
     }
 
 }
