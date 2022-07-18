@@ -1,6 +1,6 @@
 #### This script can parse data from search.ipaustralia.gov.au
 
-## Dependecies:
+## Dependencies:
 1. php 7.4
 2. ext-curl
 3. ext-json
